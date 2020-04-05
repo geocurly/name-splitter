@@ -1,0 +1,31 @@
+{
+    "name": "geocurly/name-splitter",
+    "type": "library",
+    "description": "Name split utility",
+    "keywords": ["name", "surname", "split"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Aleksandr Blizorukov",
+            "email": "geocurly@gmail.com",
+            "homepage": "https://github.com/geocurly"
+        }
+    ],
+    "require": {
+        "php": "^7.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.1",
+        "symfony/var-dumper": "^5.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "NameSplitter\\": "src/NameSplitter/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\NameSplitter\\": "tests/NameSplitter/"
+        }
+    }
+}
