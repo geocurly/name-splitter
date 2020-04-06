@@ -12,11 +12,13 @@ use PHPUnit\Framework\TestCase;
  */
 class SplitterTest extends TestCase
 {
-    /**  */
+    /**
+     *
+     */
     public function testSplit(): void
     {
         $splitter = new NameSplitter();
-        $parts = $splitter->split('Близоруков Александр Сергеевич');
-        $this->assertSame(['Близоруков', 'Александр', 'Сергеевич'], $parts);
+        $result = $splitter->split('Близоруков Александр Сергеевич');
+        $this->assertSame([null], [$result->getName()]);
     }
 }
