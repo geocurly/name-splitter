@@ -19,6 +19,15 @@ class SplitterTest extends TestCase
     {
         $splitter = new NameSplitter();
         $result = $splitter->split('Близоруков Александр Сергеевич');
-        $this->assertSame([null], [$result->getName()]);
+        $this->assertSame(
+            ['Близоруков', 'Александр', 'Сергеевич'],
+            [$result->getSurname(), $result->getName(), $result->getMiddleName()]
+        );
+
+        $result = $splitter->split('Александр Сергеевич Близоруков');
+        $this->assertSame(
+            ['Близоруков', 'Александр', 'Сергеевич'],
+            [$result->getSurname(), $result->getName(), $result->getMiddleName()]
+        );
     }
 }

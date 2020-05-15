@@ -38,4 +38,11 @@ interface StateInterface extends ResultInterface
      * @param string|null $initials
      */
     public function setInitials(?string $initials): void;
+
+    /**
+     * Set gender value
+     * @see ResultInterface const
+     * @param int|null $gender
+     */
+    public function setGender(?int $gender): void;
 }

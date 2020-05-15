@@ -25,6 +25,8 @@ class SplitState implements StateInterface
     private ?string $name = null;
     /** @var string|null $initials */
     private ?string $initials = null;
+    /** @var int|null $gender */
+    private ?int $gender;
 
     /**
      * SplitProcess constructor.
@@ -33,7 +35,11 @@ class SplitState implements StateInterface
     public function __construct(string $base)
     {
         $this->base = $base;
-        $this->parts = preg_split('/\s+/', $base);
+        $this->parts = preg_split(
+            // '-' excludes for checking double surname
+            '/(?<![-])\s+(?![-])/',
+            $base
+        );
     }
 
     /**
@@ -106,5 +112,21 @@ class SplitState implements StateInterface
     public function getInitials(): ?string
     {
         return $this->initials;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getGender(): ?int
+    {
+        return $this->gender;
+    }
+
+    /**
+     * @param int|null $gender
+     */
+    public function setGender(?int $gender): void
+    {
+        $this->gender = $gender;
     }
 }

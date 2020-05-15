@@ -32,7 +32,11 @@ class NameSplitter implements SplitterInterface
      */
     public function split(string $name): ResultInterface
     {
-        $chain = new TransformerChain(new SplitState($name), $this->entry);
+        $chain = new TransformerChain(
+            new SplitState($name),
+            $this->entry
+        );
+
         return $chain->run();
     }
 }

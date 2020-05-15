@@ -17,10 +17,6 @@ class TransformerChain
     private StateInterface $state;
     /** @var TransformerInterface $entry - entry pint for transformation */
     private TransformerInterface $entry;
-    /**
-     * @var TransformerInterface
-     */
-    private TransformerInterface $transformer;
 
     /**
      * TransformerChain constructor.
