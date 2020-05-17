@@ -52,6 +52,14 @@ class SplitterTest extends TestCase
                 $this->makeResult(['Близоруков', null, null, 'А.С.', null])
             ],
             [
+                'Близоруков Александр С.',
+                $this->makeResult(['Близоруков', 'Александр', null, 'С.', ResultInterface::GENDER_MALE])
+            ],
+            [
+                'Иннокентий И. Держ',
+                $this->makeResult(['Держ', 'Иннокентий', null, 'И.', ResultInterface::GENDER_MALE])
+            ],
+            [
                 'Близоруков Александр Сергеевич',
                 $this->makeResult(['Близоруков', 'Александр' ,'Сергеевич', null, ResultInterface::GENDER_MALE])
             ],
@@ -66,6 +74,22 @@ class SplitterTest extends TestCase
             [
                 'Ивано - иванов Иван Иванович',
                 $this->makeResult(['Ивано-иванов', 'Иван' ,'Иванович', null, ResultInterface::GENDER_MALE])
+            ],
+            [
+                'Иванова Анастасия Ивановна',
+                $this->makeResult(['Иванова', 'Анастасия' ,'Ивановна', null, ResultInterface::GENDER_FEMALE])
+            ],
+            [
+                'Дрожева Дроже Дрожевна',
+                $this->makeResult(['Дрожева', 'Дроже' ,'Дрожевна', null, ResultInterface::GENDER_FEMALE])
+            ],
+            [
+                'Крупич Иван Иванович',
+                $this->makeResult(['Крупич', 'Иван' ,'Иванович', null, ResultInterface::GENDER_MALE])
+            ],
+            [
+                'Иван Иванович Крупич',
+                $this->makeResult(['Крупич', 'Иван' ,'Иванович', null, ResultInterface::GENDER_MALE])
             ],
         ];
     }

@@ -57,7 +57,7 @@ class MiddleNameDictionary
      * @param string $middleName
      * @return bool
      */
-    public function isMaleMiddleName(string $middleName): bool
+    public function isMaleSuffix(string $middleName): bool
     {
         $suffix = $this->getSuffix(mb_strtolower($middleName, 'utf8'));
         return in_array($suffix, self::MALE_SUFFIX, true);
@@ -67,7 +67,7 @@ class MiddleNameDictionary
      * @param string $middleName
      * @return bool
      */
-    public function isFemaleMiddleName(string $middleName): bool
+    public function isFemaleSuffix(string $middleName): bool
     {
         $suffix = $this->getSuffix(mb_strtolower($middleName, 'utf8'));
         return in_array($suffix, self::FEMALE_SUFFIX, true);
