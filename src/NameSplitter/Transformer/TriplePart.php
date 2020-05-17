@@ -20,7 +20,15 @@ class TriplePart implements TransformerInterface
      */
     public function transform(StateInterface $state): ?TransformerInterface
     {
+        $initialsParser = new InitialsParser();
+        $initialsParser->transform($state);
+
         $parts = $state->getParts();
+        if (count($parts) === 1) {
+            $state->setSurname($parts[0]);
+            return null;
+        }
+
         // There is could be two patterns:
         // 1) "name" "middle name" "surname"
         // 2) "surname" "name" "middle name"

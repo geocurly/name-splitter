@@ -15,6 +15,19 @@ interface StateInterface extends ResultInterface
      * @return string[]
      */
     public function getParts(): array;
+
+    /**
+     * @param array $parts
+     * @param array $counts
+     */
+    public function setParts(array $parts, array $counts): void;
+
+    /**
+     * Return length of name parts
+     * @param int $num
+     * @return int|null
+     */
+    public function getLengthPart(int $num): ?int;
     
     /**
      * Set name value
