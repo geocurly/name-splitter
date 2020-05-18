@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace NameSplitter\Template;
 
 use NameSplitter\Contract\TemplateInterface as TPL;
+use NameSplitter\SplitState;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -23,9 +24,10 @@ class RussianRegexTest extends TestCase
     {
         $regex = new RussianRegex(array_keys($expected));
 
+        $state = new SplitState($target);
         $this->assertSame(
             $expected,
-            $regex($target),
+            $regex($state),
         );
     }
 
@@ -38,53 +40,53 @@ class RussianRegexTest extends TestCase
             [
                 'Близоруков Александр Сергеевич',
                 [
-                    TPL::TPL_SURNAME => 'Близоруков',
-                    TPL::TPL_NAME => 'Александр',
-                    TPL::TPL_MIDDLE_NAME => 'Сергеевич',
+                    TPL::SURNAME => 'Близоруков',
+                    TPL::NAME => 'Александр',
+                    TPL::MIDDLE_NAME => 'Сергеевич',
                 ]
             ],
             [
                 'Александр Сергеевич Близоруков',
                 [
-                    TPL::TPL_NAME => 'Александр',
-                    TPL::TPL_MIDDLE_NAME => 'Сергеевич',
-                    TPL::TPL_SURNAME => 'Близоруков',
+                    TPL::NAME => 'Александр',
+                    TPL::MIDDLE_NAME => 'Сергеевич',
+                    TPL::SURNAME => 'Близоруков',
                 ]
             ],
             [
                 'Сергеевич Александр Близоруков',
                 [
-                    TPL::TPL_MIDDLE_NAME => 'Сергеевич',
-                    TPL::TPL_NAME => 'Александр',
-                    TPL::TPL_SURNAME => 'Близоруков',
+                    TPL::MIDDLE_NAME => 'Сергеевич',
+                    TPL::NAME => 'Александр',
+                    TPL::SURNAME => 'Близоруков',
                 ]
             ],
             [
                 'Близоруков А.С.',
                 [
-                    TPL::TPL_SURNAME => 'Близоруков',
-                    TPL::TPL_INITIALS_STRICT => 'А.С.'
+                    TPL::SURNAME => 'Близоруков',
+                    TPL::INITIALS_STRICT => 'А.С.'
                 ]
             ],
             [
                 'А.С. Близоруков',
                 [
-                    TPL::TPL_INITIALS_STRICT => 'А.С.',
-                    TPL::TPL_SURNAME => 'Близоруков',
+                    TPL::INITIALS_STRICT => 'А.С.',
+                    TPL::SURNAME => 'Близоруков',
                 ]
             ],
             [
                 'Александр Близоруков',
                 [
-                    TPL::TPL_NAME => 'Александр',
-                    TPL::TPL_SURNAME => 'Близоруков',
+                    TPL::NAME => 'Александр',
+                    TPL::SURNAME => 'Близоруков',
                 ]
             ],
             [
                 'Александр Сергеевич',
                 [
-                    TPL::TPL_NAME => 'Александр',
-                    TPL::TPL_MIDDLE_NAME => 'Сергеевич',
+                    TPL::NAME => 'Александр',
+                    TPL::MIDDLE_NAME => 'Сергеевич',
                 ]
             ],
         ];

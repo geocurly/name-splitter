@@ -17,6 +17,12 @@ interface StateInterface extends ResultInterface
     public function getParts(): array;
 
     /**
+     * Return base string
+     * @return string
+     */
+    public function getBase(): string;
+
+    /**
      * @param array $parts
      * @param array $counts
      */

@@ -11,34 +11,34 @@ namespace NameSplitter\Contract;
 interface TemplateInterface
 {
     /** @var string surname template key */
-    public const TPL_SURNAME = '%Surname';
+    public const SURNAME = '%Surname';
     /** @var string middle name template key */
-    public const TPL_MIDDLE_NAME = '%Middle';
+    public const MIDDLE_NAME = '%Middle';
     /** @var string name template key */
-    public const TPL_NAME = "%Name";
+    public const NAME = "%Name";
     /** @var string strict initials key */
-    public const TPL_INITIALS_STRICT = '%CH.%CH.';
+    public const INITIALS_STRICT = '%CH.%CH.';
+    /** @var string splitted initials key */
+    public const INITIALS_SPLITTED = '%CH. %CH.';
 
     /** @var string[]  */
     public const TPL_AVAILABLE = [
-        self::TPL_NAME,
-        self::TPL_SURNAME,
-        self::TPL_MIDDLE_NAME,
-        self::TPL_INITIALS_STRICT,
+        self::NAME,
+        self::SURNAME,
+        self::MIDDLE_NAME,
+        self::INITIALS_STRICT,
+        self::INITIALS_SPLITTED,
     ];
-
-    /** @var string upper char key */
-    public const TPL_CHAR_UPPER = '%CH';
 
     /**
      * Parse template to given state
-     * @param string $target a string to split
+     * @param StateInterface $state
      * @return array = [
-     *     TemplateInterface::TPL_SURNAME => 'MatchedValue or null',
-     *     TemplateInterface::TPL_MIDDLE_NAME => 'MatchedValue or null',
-     *     TemplateInterface::TPL_NAME => 'MatchedValue or null',
-     *     TemplateInterface::TPL_INITIALS_STRICT => 'MatchedValue or null',
+     *     TemplateInterface::SURNAME => 'MatchedValue or null',
+     *     TemplateInterface::MIDDLE_NAME => 'MatchedValue or null',
+     *     TemplateInterface::NAME => 'MatchedValue or null',
+     *     TemplateInterface::INITIALS_STRICT => 'MatchedValue or null',
      * ]
      */
-    public function __invoke(string $target): array;
+    public function __invoke(StateInterface $state): array;
 }

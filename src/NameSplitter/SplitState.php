@@ -154,4 +154,12 @@ class SplitState implements StateInterface
         $this->parts = $parts;
         $this->lengthMap = $counts;
     }
+
+    /**
+     * @return string
+     */
+    public function getBase(): string
+    {
+        return $this->base;
+    }
 }

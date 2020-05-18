@@ -29,14 +29,12 @@ class SplitterTest extends TestCase
                 $expected->getName(),
                 $expected->getMiddleName(),
                 $expected->getInitials(),
-                $expected->getGender(),
             ],
             [
                 $result->getSurname(),
                 $result->getName(),
                 $result->getMiddleName(),
                 $result->getInitials(),
-                $result->getGender(),
             ]
         );
     }
@@ -49,47 +47,91 @@ class SplitterTest extends TestCase
         return [
             [
                 'Близоруков А. С.',
-                $this->makeResult(['Близоруков', null, null, 'А.С.', null])
+                $this->makeResult(['Близоруков', null, null, 'А. С.'])
             ],
             [
-                'Близоруков Александр С.',
-                $this->makeResult(['Близоруков', 'Александр', null, 'С.', ResultInterface::GENDER_MALE])
+                'А. С. Близоруков',
+                $this->makeResult(['Близоруков', null, null, 'А. С.'])
             ],
             [
-                'Иннокентий И. Держ',
-                $this->makeResult(['Держ', 'Иннокентий', null, 'И.', ResultInterface::GENDER_MALE])
+                'Близоруков А.С.',
+                $this->makeResult(['Близоруков', null, null, 'А.С.'])
+            ],
+            [
+                'А.С. Близоруков',
+                $this->makeResult(['Близоруков', null, null, 'А.С.'])
             ],
             [
                 'Близоруков Александр Сергеевич',
-                $this->makeResult(['Близоруков', 'Александр' ,'Сергеевич', null, ResultInterface::GENDER_MALE])
+                $this->makeResult(['Близоруков', 'Александр', 'Сергеевич', null])
             ],
             [
                 'Александр Сергеевич Близоруков',
-                $this->makeResult(['Близоруков', 'Александр' ,'Сергеевич',null, ResultInterface::GENDER_MALE])
+                $this->makeResult(['Близоруков', 'Александр', 'Сергеевич', null])
             ],
             [
-                'Ивано-иванов Иван Иванович',
-                $this->makeResult(['Ивано-иванов', 'Иван' ,'Иванович', null, ResultInterface::GENDER_MALE])
+                'Александр Сергеевич',
+                $this->makeResult([null, 'Александр', 'Сергеевич', null])
             ],
             [
-                'Ивано - иванов Иван Иванович',
-                $this->makeResult(['Ивано-иванов', 'Иван' ,'Иванович', null, ResultInterface::GENDER_MALE])
+                'Близоруков Александр',
+                $this->makeResult(['Близоруков', 'Александр', null, null])
             ],
             [
-                'Иванова Анастасия Ивановна',
-                $this->makeResult(['Иванова', 'Анастасия' ,'Ивановна', null, ResultInterface::GENDER_FEMALE])
+                'Александр Близоруков',
+                $this->makeResult(['Близоруков', 'Александр', null, null])
             ],
             [
-                'Дрожева Дроже Дрожевна',
-                $this->makeResult(['Дрожева', 'Дроже' ,'Дрожевна', null, ResultInterface::GENDER_FEMALE])
+                'Близоруков А. С.',
+                $this->makeResult(['Близоруков', null, null, 'А. С.'])
             ],
             [
-                'Крупич Иван Иванович',
-                $this->makeResult(['Крупич', 'Иван' ,'Иванович', null, ResultInterface::GENDER_MALE])
+                'А. С. Близоруков',
+                $this->makeResult(['Близоруков', null, null, 'А. С.'])
             ],
             [
-                'Иван Иванович Крупич',
-                $this->makeResult(['Крупич', 'Иван' ,'Иванович', null, ResultInterface::GENDER_MALE])
+                'Крайнович К. О.',
+                $this->makeResult(['Крайнович', null, null, 'К. О.'])
+            ],
+            [
+                'Крайнович К.О.',
+                $this->makeResult(['Крайнович', null, null, 'К.О.'])
+            ],
+            [
+                'К.О. Крайнович',
+                $this->makeResult(['Крайнович', null, null, 'К.О.'])
+            ],
+            [
+                'К.  О. Крайнович',
+                $this->makeResult(['Крайнович', null, null, 'К.  О.'])
+            ],
+            [
+                'Крайнович Ксения',
+                $this->makeResult(['Крайнович', 'Ксения', null, null])
+            ],
+            [
+                'Ксения Крайнович',
+                $this->makeResult(['Крайнович', 'Ксения', null, null])
+            ],
+            [
+                'Ксения Олеговна Крайнович',
+                $this->makeResult(['Крайнович', 'Ксения', 'Олеговна', null])
+            ],
+            [
+                'Ксения Олеговна Иванович',
+                $this->makeResult(['Иванович', 'Ксения', 'Олеговна', null])
+            ],
+            [
+                'Иванович Ксения Олеговна',
+                $this->makeResult(['Иванович', 'Ксения', 'Олеговна', null])
+            ],
+            [
+                'Крайнович Ксения Олеговна',
+                $this->makeResult(['Крайнович', 'Ксения', 'Олеговна', null])
+            ],
+            [
+                'Ксения Олеговна',
+                $this->makeResult([null, 'Ксения', 'Олеговна', null])
             ],
         ];
     }
