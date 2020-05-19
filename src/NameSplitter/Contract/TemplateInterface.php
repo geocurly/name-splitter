@@ -17,9 +17,9 @@ interface TemplateInterface
     /** @var string name template key */
     public const NAME = "%Name";
     /** @var string strict initials key */
-    public const INITIALS_STRICT = '%CH.%CH.';
-    /** @var string splitted initials key */
-    public const INITIALS_SPLITTED = '%CH. %CH.';
+    public const INITIALS_STRICT = '%StrictInitials';
+    /** @var string split initials key */
+    public const INITIALS_SPLIT = '%SplitInitials';
 
     /** @var string[]  */
     public const TPL_AVAILABLE = [
@@ -27,7 +27,7 @@ interface TemplateInterface
         self::SURNAME,
         self::MIDDLE_NAME,
         self::INITIALS_STRICT,
-        self::INITIALS_SPLITTED,
+        self::INITIALS_SPLIT,
     ];
 
     /**

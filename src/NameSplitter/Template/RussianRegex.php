@@ -19,7 +19,7 @@ class RussianRegex implements TemplateInterface
         self::MIDDLE_NAME => ['([а-яА-ЯёЁ]+(вич|тич|пич|лич|нич|мич|ьич|кич|вна|чна))', 2],
         self::NAME => ['([а-яА-ЯёЁ]+)', 1],
         self::INITIALS_STRICT => ['(([а-яА-ЯёЁ]\.){2})', 2],
-        self::INITIALS_SPLITTED => ['([а-яА-ЯёЁ]\.\s+[а-яА-ЯёЁ]\.)', 1],
+        self::INITIALS_SPLIT => ['([а-яА-ЯёЁ]\.\s+[а-яА-ЯёЁ]\.)', 1],
     ];
 
     /** @var string $regex */

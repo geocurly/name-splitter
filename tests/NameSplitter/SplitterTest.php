@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Tests\NameSplitter;
 
 use NameSplitter\Contract\ResultInterface;
+use NameSplitter\Contract\TemplateInterface;
 use NameSplitter\NameSplitter;
+use NameSplitter\Template\SimpleMatch;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -146,6 +148,65 @@ class SplitterTest extends TestCase
         $result = $splitter->split($full);
         $this->assertSame(
             explode(' ', $full),
+            [
+                $result->getSurname(),
+                $result->getName(),
+                $result->getMiddleName(),
+            ]
+        );
+    }
+
+    /**
+     * Check extending before callbacks
+     */
+    public function testBeforeCallback(): void
+    {
+        $full = 'Difficult Surname Name Middle Name';
+        $callable = new SimpleMatch([
+            TemplateInterface::SURNAME => 'Difficult Surname',
+            TemplateInterface::NAME => 'Name',
+            TemplateInterface::MIDDLE_NAME => 'Middle Name',
+        ]);
+
+        $splitter = new NameSplitter([], [$callable]);
+
+        $result = $splitter->split($full);
+        $this->assertSame(
+            [
+                'Difficult Surname',
+                'Name',
+                'Middle Name',
+            ],
+            [
+                $result->getSurname(),
+                $result->getName(),
+                $result->getMiddleName(),
+            ]
+        );
+    }
+
+
+    /**
+     * Check extending before callbacks
+     */
+    public function testAfterCallback(): void
+    {
+        $full = 'Difficult Surname Name Middle Name';
+        $callable = new SimpleMatch([
+            TemplateInterface::SURNAME => 'Difficult Surname',
+            TemplateInterface::NAME => 'Name',
+            TemplateInterface::MIDDLE_NAME => 'Middle Name',
+        ]);
+
+        $splitter = new NameSplitter([], [], [$callable]);
+
+        $result = $splitter->split($full);
+        $this->assertSame(
+            [
+                'Difficult Surname',
+                'Name',
+                'Middle Name',
+            ],
             [
                 $result->getSurname(),
                 $result->getName(),
