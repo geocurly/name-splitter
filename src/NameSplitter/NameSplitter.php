@@ -19,6 +19,15 @@ use NameSplitter\Template\RussianRegex;
 class NameSplitter implements SplitterInterface
 {
     /**
+     * NameSplitter constructor.
+     * @param array $settings
+     */
+    public function __construct(array $settings = [])
+    {
+        Settings::setEncoding($settings[self::SETTING_ENCODING] ?? 'UTF-8');
+    }
+
+    /**
      * Callable templates
      * @return callable[]
      */
@@ -45,6 +54,10 @@ class NameSplitter implements SplitterInterface
     private function fillState(StateInterface $state, array $matches): ResultInterface
     {
         foreach (array_filter($matches, fn($match) => $match !== null) as $part => $value) {
+            if (Settings::getEncoding() !== 'UTF-8') {
+                $value = mb_convert_encoding($value, Settings::getEncoding(), 'UTF-8');
+            }
+
             switch ($part) {
                 case TPL::SURNAME:
                     $state->setSurname($value);
@@ -72,6 +85,10 @@ class NameSplitter implements SplitterInterface
      */
     public function split(string $name): ResultInterface
     {
+        if (Settings::getEncoding() !== 'UTF-8') {
+            $name = mb_convert_encoding($name, 'UTF-8', Settings::getEncoding());
+        }
+
         $state = new SplitState($name);
         foreach ($this->getDefaultTemplates() as $template) {
             $match = $template($state);

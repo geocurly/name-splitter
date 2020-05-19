@@ -41,7 +41,7 @@ class MiddleNameDictionary
      */
     public function maleExists(string $name): bool
     {
-        return array_key_exists(mb_strtolower($name, 'utf8'), $this->getMaleIndex());
+        return array_key_exists(mb_strtolower($name, 'UTF-8'), $this->getMaleIndex());
     }
 
     /**
@@ -50,7 +50,7 @@ class MiddleNameDictionary
      */
     public function femaleExists(string $middleName): bool
     {
-        return array_key_exists(mb_strtolower($middleName, 'utf8'), $this->getFemaleIndex());
+        return array_key_exists(mb_strtolower($middleName, 'UTF-8'), $this->getFemaleIndex());
     }
 
     /**
@@ -59,7 +59,7 @@ class MiddleNameDictionary
      */
     public function isMaleSuffix(string $middleName): bool
     {
-        $suffix = $this->getSuffix(mb_strtolower($middleName, 'utf8'));
+        $suffix = $this->getSuffix(mb_strtolower($middleName, 'UTF-8'));
         return in_array($suffix, self::MALE_SUFFIX, true);
     }
 
@@ -69,7 +69,7 @@ class MiddleNameDictionary
      */
     public function isFemaleSuffix(string $middleName): bool
     {
-        $suffix = $this->getSuffix(mb_strtolower($middleName, 'utf8'));
+        $suffix = $this->getSuffix(mb_strtolower($middleName, 'UTF-8'));
         return in_array($suffix, self::FEMALE_SUFFIX, true);
     }
 
@@ -79,7 +79,7 @@ class MiddleNameDictionary
      */
     private function getSuffix(string $middleName): string
     {
-        return mb_substr($middleName, -3, 3, 'utf8');
+        return mb_substr($middleName, -3, 3, 'UTF-8');
     }
 
     /**

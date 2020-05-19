@@ -21,19 +21,6 @@ interface StateInterface extends ResultInterface
      * @return string
      */
     public function getBase(): string;
-
-    /**
-     * @param array $parts
-     * @param array $counts
-     */
-    public function setParts(array $parts, array $counts): void;
-
-    /**
-     * Return length of name parts
-     * @param int $num
-     * @return int|null
-     */
-    public function getLengthPart(int $num): ?int;
     
     /**
      * Set name value
@@ -57,11 +44,4 @@ interface StateInterface extends ResultInterface
      * @param string|null $initials
      */
     public function setInitials(?string $initials): void;
-
-    /**
-     * Set gender value
-     * @see ResultInterface const
-     * @param int|null $gender
-     */
-    public function setGender(?int $gender): void;
 }

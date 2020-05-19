@@ -10,6 +10,9 @@ namespace NameSplitter\Contract;
  */
 interface SplitterInterface
 {
+    /** @var string encoding setting key */
+    public const SETTING_ENCODING = 'enc';
+
     /**
      * Split string with name parts
      *

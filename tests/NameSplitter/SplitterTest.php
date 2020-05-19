@@ -137,6 +137,24 @@ class SplitterTest extends TestCase
     }
 
     /**
+     * Check splitting with another encoding
+     */
+    public function testEncoding(): void
+    {
+        $full = mb_convert_encoding("Близоруков Александр Сергеевич", 'CP1251', 'UTF-8');
+        $splitter = new NameSplitter(['enc' => 'CP1251']);
+        $result = $splitter->split($full);
+        $this->assertSame(
+            explode(' ', $full),
+            [
+                $result->getSurname(),
+                $result->getName(),
+                $result->getMiddleName(),
+            ]
+        );
+    }
+
+    /**
      * @param array $result
      * @return ResultInterface
      */
@@ -147,7 +165,6 @@ class SplitterTest extends TestCase
             'getName' => $result[1] ?? null,
             'getMiddleName' => $result[2] ?? null,
             'getInitials' => $result[3] ?? null,
-            'getGender' => $result[4] ?? null,
         ];
 
         $mock = $this->getMockBuilder(ResultInterface::class)->getMock();

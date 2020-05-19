@@ -36,7 +36,7 @@ class NameDictionary
      */
     public function maleExists(string $name): bool
     {
-        return array_key_exists(mb_strtolower($name, 'utf8'), $this->getMaleIndex());
+        return array_key_exists(mb_strtolower($name, 'UTF-8'), $this->getMaleIndex());
     }
 
     /**
@@ -45,7 +45,7 @@ class NameDictionary
      */
     public function femaleExists(string $name): bool
     {
-        return array_key_exists(mb_strtolower($name, 'utf8'), $this->getFemaleIndex());
+        return array_key_exists(mb_strtolower($name, 'UTF-8'), $this->getFemaleIndex());
     }
 
     /**

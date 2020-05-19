@@ -41,6 +41,27 @@ abstract class Settings
     /** @var string $root root of the package */
     private static string $root;
 
+    /** @var string encoding */
+    private static string $encoding = 'UTF-8';
+
+    /**
+     * Set encoding settings
+     * @param string $enc
+     */
+    public static function setEncoding(string $enc): void
+    {
+        self::$encoding = $enc;
+    }
+
+    /**
+     * Get name encoding
+     * @return string
+     */
+    public static function getEncoding(): string
+    {
+        return self::$encoding;
+    }
+
     /**
      * Set root of the package
      * @param string $root
