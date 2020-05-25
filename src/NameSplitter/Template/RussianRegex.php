@@ -6,6 +6,7 @@ namespace NameSplitter\Template;
 
 use NameSplitter\Contract\StateInterface;
 use NameSplitter\Contract\TemplateInterface;
+use RuntimeException;
 
 /**
  * Class RussianRegex
@@ -15,17 +16,17 @@ class RussianRegex implements TemplateInterface
 {
     /** @var string[]  */
     private const TEMPLATES = [
-        self::SURNAME => ['(([а-яА-ЯёЁ]+(\s*-\s*)?)+)', 3],
-        self::MIDDLE_NAME => ['([а-яА-ЯёЁ]+(вич|тич|пич|лич|нич|мич|ьич|кич|вна|чна))', 2],
-        self::NAME => ['([а-яА-ЯёЁ]+)', 1],
-        self::INITIALS_STRICT => ['(([а-яА-ЯёЁ]\.){2})', 2],
-        self::INITIALS_SPLIT => ['([а-яА-ЯёЁ]\.\s+[а-яА-ЯёЁ]\.)', 1],
+        self::SURNAME => '([а-яА-ЯёЁ]+(\s*-\s*)?)+',
+        self::MIDDLE_NAME => '[а-яА-ЯёЁ]+(вич|тич|пич|лич|нич|мич|ьич|кич|вна|чна|оглы|кызы)',
+        self::NAME => '[а-яА-ЯёЁ]+',
+        self::INITIALS_STRICT => '([а-яА-ЯёЁ]\.){2}',
+        self::INITIALS_SPLIT => '[а-яА-ЯёЁ]\.\s+[а-яА-ЯёЁ]\.',
     ];
 
     /** @var string $regex */
     private string $regex;
-    /** @var array $matchNumbers */
-    private array $matchNumbers;
+    /** @var array $groups */
+    private array $groups;
 
     /**
      * RussianRegex constructor.
@@ -34,24 +35,19 @@ class RussianRegex implements TemplateInterface
     public function __construct(array $template)
     {
         $regex = [];
-        $match = [];
 
-        $lastMatch = 0;
         foreach ($template as $part) {
             if (in_array($part, self::TPL_AVAILABLE, true)) {
+                $groupKey = mb_substr($part, 1, null, 'UTF-8');
                 $matchRule = self::TEMPLATES[$part];
-                $regex[] = $matchRule[0];
-                // Always match first group
-                $match[$part] = ($lastMatch + 1);
-                // Add max group count in template
-                $lastMatch += $matchRule[1];
+                $regex[$groupKey] = "(?P<$groupKey>$matchRule)";
             } else {
-                $regex[] = preg_quote($part);
+                throw new RuntimeException("Unavailable match key: $part");
             }
         }
 
         $this->regex = '/^' . implode('\s+', $regex) . '$/iu';
-        $this->matchNumbers = $match;
+        $this->groups = array_keys($regex);
     }
 
 
@@ -66,8 +62,8 @@ class RussianRegex implements TemplateInterface
         }
 
         $parsed = [];
-        foreach ($this->matchNumbers as $name => $number) {
-            $parsed[$name] = $matches[$number] ?? null;
+        foreach ($this->groups as $name) {
+            $parsed["%$name"] = $matches[$name] ?? null;
         }
 
         return $parsed;

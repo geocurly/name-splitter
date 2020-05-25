@@ -48,6 +48,10 @@ class SplitterTest extends TestCase
     {
         return [
             [
+                'Штурманов Никита',
+                $this->makeResult(['Штурманов', 'Никита', null, null])
+            ],
+            [
                 'Близоруков А. С.',
                 $this->makeResult(['Близоруков', null, null, 'А. С.'])
             ],

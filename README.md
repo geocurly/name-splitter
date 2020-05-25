@@ -48,9 +48,9 @@ $before = [
     static function(StateInterface $state) {
         // TODO there is will be your implementation
         return [
-            TPL::SURNAME => $surname, 
-            TPL::NAME => $name,
-        ]
+            TPL::SURNAME => $surname ?? null, 
+            TPL::NAME => $name ?? null,
+        ];
     },
 ];
 
