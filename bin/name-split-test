@@ -3,6 +3,7 @@
 
 declare(strict_types=1);
 
+use NameSplitter\Contract\TemplateInterface as TPL;
 use NameSplitter\NameSplitter;
 
 require_once __DIR__ . "/../vendor/autoload.php";
@@ -90,7 +91,7 @@ class NameTester {
     {
         $splitter = new NameSplitter();
         foreach ($this->iterator->next() as $nameObject) {
-            foreach ($this->prepare($nameObject) as [$testString, $expected]) {
+            foreach ($this->prepare($nameObject) as [$template, $testString, $expected]) {
                 $result = $splitter->split($testString);
                 $real = [
                     $result->getSurname(),
@@ -101,10 +102,10 @@ class NameTester {
 
                 $isSame = $expected === $real;
                 if ($isSame) {
-                    yield true => "SUCCESS: $testString";
+                    yield true => "SUCCESS: $template - $testString";
                     $this->stat[0]++;
                 } else {
-                    yield false => "ERROR: $testString";
+                    yield false => "ERROR: $template - $testString. REAL: " . implode(' ', $real);
                 }
 
                 $this->stat[1]++;
@@ -120,7 +121,7 @@ class NameTester {
      */
     private function prepare(NameObject $object): iterable
     {
-        foreach (['full'] as $method) {
+        foreach (['full', 'nameMiddle'] as $method) {
             $pack = $this->{$method}($object);
             if ($pack === null) {
                 continue;
@@ -138,7 +139,28 @@ class NameTester {
     {
         $full = array_filter($object->getFull());
         if (count($full) === 3) {
-            return [implode(' ', $full), [...$full, null]];
+            return [
+                sprintf('%s %s %s', TPL::SURNAME, TPL::NAME, TPL::MIDDLE_NAME),
+                implode(' ', $full),
+                [...$full, null]
+            ];
+        }
+
+        return null;
+    }
+
+    /**
+     * @param NameObject $object
+     * @return array|null [$testString, $expected]
+     */
+    private function nameMiddle(NameObject $object): ?array
+    {
+        if (!in_array(null, [$object->name, $object->middle])) {
+            return [
+                sprintf('%s %s',TPL::NAME, TPL::MIDDLE_NAME),
+                "$object->name $object->middle",
+                [null, $object->name, $object->middle, null]
+            ];
         }
 
         return null;
@@ -150,6 +172,14 @@ class NameTester {
     public function getAccuracy(): float
     {
         return $this->accuracy;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCounts(): array
+    {
+        return $this->stat;
     }
 }
 
@@ -173,5 +203,16 @@ foreach ($tester->test() as $state => $message) {
     }
 }
 
+$accuracy = number_format($tester->getAccuracy(), 2);
+[$correct, $total] = $tester->getCounts();
+$delta = $total - $correct;
+$result = <<<TEXT
+    
+    ACCURACY: $accuracy
+    COUNT CASE TOTAL: $total
+    COUNT CASE PASS:  $correct
+    COUNT CASE ERROR: $delta
+    
+    TEXT;
 
-echo "RESULT: Accuracy is " . number_format($tester->getAccuracy(), 3) . PHP_EOL;
+echo $result;

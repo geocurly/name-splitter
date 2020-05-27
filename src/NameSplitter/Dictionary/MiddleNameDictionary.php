@@ -60,7 +60,8 @@ class MiddleNameDictionary
     public function isMaleSuffix(string $middleName): bool
     {
         $suffix = $this->getSuffix(mb_strtolower($middleName, 'UTF-8'));
-        return in_array($suffix, self::MALE_SUFFIX, true);
+        return in_array($suffix, self::MALE_SUFFIX, true) ||
+            mb_substr($middleName, -4, null, 'UTF-8') === 'оглы';
     }
 
     /**
@@ -70,7 +71,8 @@ class MiddleNameDictionary
     public function isFemaleSuffix(string $middleName): bool
     {
         $suffix = $this->getSuffix(mb_strtolower($middleName, 'UTF-8'));
-        return in_array($suffix, self::FEMALE_SUFFIX, true);
+        return in_array($suffix, self::FEMALE_SUFFIX, true) ||
+            mb_substr($middleName, -4, null, 'UTF-8') === 'кызы';
     }
 
     /**

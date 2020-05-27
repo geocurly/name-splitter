@@ -22,26 +22,48 @@ class NameDoublet implements TemplateInterface
             return [];
         }
 
-        foreach ($parts as $key => $part) {
+        // Look for surname. Middle name haven't to be on the first position
+        $first = $parts[0];
+        $gender = null;
+        if (Settings::getNameDictionary()->maleExists($first)) {
+            $gender = 0;
+        } elseif (Settings::getNameDictionary()->femaleExists($first)) {
+            $gender = 1;
+        }
+
+        if ($gender !== null) {
+            $second = $parts[1];
             if (
-                Settings::getNameDictionary()->maleExists($part) ||
-                Settings::getNameDictionary()->femaleExists($part)
+                $gender === 0 && Settings::getMiddleNameDictionary()->isMaleSuffix($second) ||
+                $gender === 1 && Settings::getMiddleNameDictionary()->isFemaleSuffix($second)
             ) {
-                $another = $key === 0 ? $parts[1] : $parts[0];
-                $isMiddleName = Settings::getMiddleNameDictionary()->maleExists($another) ||
-                    Settings::getMiddleNameDictionary()->femaleExists($another);
-
-                $result[TPL::NAME] = $part;
-                if ($isMiddleName) {
-                    $result[TPL::MIDDLE_NAME] = $another;
-                } else {
-                    $result[TPL::SURNAME] = $another;
-                }
-
-                return $result;
+                // Middle name on the second position
+                // Take first as a name
+                return [
+                    TPL::NAME => $parts[0],
+                    TPL::MIDDLE_NAME => $parts[1],
+                ];
+            } else {
+                return [
+                    TPL::NAME => $parts[0],
+                    TPL::SURNAME => $parts[1],
+                ];
             }
         }
 
-        return [];
+        if (
+            Settings::getMiddleNameDictionary()->isFemaleSuffix($parts[1]) ||
+            Settings::getMiddleNameDictionary()->isMaleSuffix($parts[1])
+        ) {
+            return [
+                TPL::MIDDLE_NAME => $parts[1],
+                TPL::NAME => $parts[0],
+            ];
+        }
+
+        return [
+            TPL::SURNAME => $first,
+            TPL::NAME => $parts[1],
+        ];
     }
 }
