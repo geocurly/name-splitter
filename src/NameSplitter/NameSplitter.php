@@ -10,17 +10,17 @@ use NameSplitter\Contract\StateInterface;
 use NameSplitter\Contract\TemplateInterface as TPL;
 use NameSplitter\Template\MiddleNameTriplet;
 use NameSplitter\Template\NameDoublet;
-use NameSplitter\Template\RussianRegex;
+use NameSplitter\Template\RussianRegexMatch;
 
 /**
  * Class NameSplitter
- * @package NameSplitter
+ * @package NameSplitteradmin/export_executor.php
  */
 class NameSplitter implements SplitterInterface
 {
     /** @var callable[] before templates callback */
     private array $beforeTemplates;
-    /** @var callable[] before templates callback */
+    /** @var callable[] after templates callback */
     private array $afterTemplates;
 
     /**
@@ -43,15 +43,15 @@ class NameSplitter implements SplitterInterface
     private function getDefaultTemplates(): array
     {
         return [
-            new RussianRegex([TPL::SURNAME, TPL::INITIALS_STRICT]), // Иванов И.И.
-            new RussianRegex([TPL::INITIALS_STRICT, TPL::SURNAME]), // И.И. Иванов
+            new RussianRegexMatch([TPL::SURNAME, TPL::INITIALS_STRICT]), // Иванов И.И.
+            new RussianRegexMatch([TPL::INITIALS_STRICT, TPL::SURNAME]), // И.И. Иванов
             new MiddleNameTriplet(), // Dictionary middle-name check
             new NameDoublet(), // Иванов Иван or Иван Иванов
-            new RussianRegex([TPL::INITIALS_SPLIT, TPL::SURNAME]), // И. И. Иванов
-            new RussianRegex([TPL::SURNAME, TPL::INITIALS_SPLIT]), // Иванов И. И.
-            new RussianRegex([TPL::SURNAME, TPL::NAME, TPL::MIDDLE_NAME]), // Иванов Иван Иванович
-            new RussianRegex([TPL::NAME, TPL::MIDDLE_NAME, TPL::SURNAME]), // Иван Иванович Иванов
-            new RussianRegex([TPL::NAME, TPL::MIDDLE_NAME]), // Иван Иванович
+            new RussianRegexMatch([TPL::INITIALS_SPLIT, TPL::SURNAME]), // И. И. Иванов
+            new RussianRegexMatch([TPL::SURNAME, TPL::INITIALS_SPLIT]), // Иванов И. И.
+            new RussianRegexMatch([TPL::SURNAME, TPL::NAME, TPL::MIDDLE_NAME]), // Иванов Иван Иванович
+            new RussianRegexMatch([TPL::NAME, TPL::MIDDLE_NAME, TPL::SURNAME]), // Иван Иванович Иванов
+            new RussianRegexMatch([TPL::NAME, TPL::MIDDLE_NAME]), // Иван Иванович
         ];
     }
 

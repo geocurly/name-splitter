@@ -9,16 +9,16 @@ use NameSplitter\Contract\TemplateInterface;
 use RuntimeException;
 
 /**
- * Class RussianRegex
+ * Class RussianRegexMatch
  * @package NameSplitter\Template
  */
-class RussianRegex implements TemplateInterface
+class RussianRegexMatch implements TemplateInterface
 {
     /** @var string[]  */
     private const TEMPLATES = [
         self::SURNAME => '([а-яА-ЯёЁ]+(\s*-\s*)?)+',
-        self::MIDDLE_NAME => '[а-яА-ЯёЁ]+(вич|тич|пич|лич|нич|мич|ьич|кич|вна|чна|оглы|кызы)',
-        self::NAME => '[а-яА-ЯёЁ]+',
+        self::MIDDLE_NAME => '([а-яА-ЯёЁ]+(\s*-\s*)?)+(вич|тич|пич|лич|нич|мич|ьич|кич|вна|чна|оглы|кызы)',
+        self::NAME => '([а-яА-ЯёЁ]+(\s*-\s*)?)+',
         self::INITIALS_STRICT => '([а-яА-ЯёЁ]\.){2}',
         self::INITIALS_SPLIT => '[а-яА-ЯёЁ]\.\s+[а-яА-ЯёЁ]\.',
     ];
@@ -29,7 +29,7 @@ class RussianRegex implements TemplateInterface
     private array $groups;
 
     /**
-     * RussianRegex constructor.
+     * RussianRegexMatch constructor.
      * @param array $template
      */
     public function __construct(array $template)

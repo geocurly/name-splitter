@@ -16,13 +16,13 @@ class RussianRegexTest extends TestCase
 {
     /**
      * @dataProvider templatesProvider
-     * @covers       \NameSplitter\Template\RussianRegex::__invoke
+     * @covers       \NameSplitter\Template\RussianRegexMatch::__invoke
      * @param array $expected
      * @param string $target
      */
     public function testRussianRegexInvoke(string $target, array $expected): void
     {
-        $regex = new RussianRegex(array_keys($expected));
+        $regex = new RussianRegexMatch(array_keys($expected));
 
         $state = new SplitState($target);
         $this->assertSame(
