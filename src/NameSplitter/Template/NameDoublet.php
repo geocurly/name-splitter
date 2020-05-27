@@ -61,8 +61,32 @@ class NameDoublet implements TemplateInterface
             ];
         }
 
+        $surnameSuffix = [
+            'ов',
+            'ев',
+            'ева',
+            'ова',
+            'онко',
+            'енко',
+            'ллин',
+            'ллина',
+            'штейн',
+            'инина',
+            'инин',
+            'цкий',
+            'цкая',
+            'ский',
+            'ская',
+            'швили',
+            'сян',
+            'нян',
+            'опян',
+            'икин',
+        ];
+
+        $regex = "/^([а-яА-ЯёЁ]+(\s*-\s*)?)+(" . implode('|', $surnameSuffix) . ")$/iu";
         foreach ($parts as $key => $part) {
-            if (in_array(mb_substr($part, -2, 2, 'UTF-8'), ['ов', 'ва', 'ев', 'ко'], true)) {
+            if (preg_match($regex, $part) === 1) {
                 return [
                     TPL::SURNAME => $key === 0 ? $parts[0] : $parts[1],
                     TPL::NAME => $key === 1 ? $parts[0] : $parts[1],
