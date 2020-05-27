@@ -117,53 +117,66 @@ class NameTester {
 
     /**
      * @param NameObject $object
+     * @param mixed ...$parts
+     * @return array
+     */
+    private function factory(NameObject $object, ...$parts): ?array
+    {
+        $map = [
+            TPL::SURNAME => fn($object) => $object->surname,
+            TPL::NAME => fn($object) => $object->name,
+            TPL::MIDDLE_NAME => fn($object) => $object->middle,
+        ];
+
+        $countMap = [
+            TPL::SURNAME => 0,
+            TPL::NAME => 1,
+            TPL::MIDDLE_NAME => 2,
+            TPL::INITIALS_STRICT => 3,
+            TPL::INITIALS_SPLIT => 3,
+        ];
+
+        $template = [[],[],[null, null, null, null]];
+        foreach ($parts as $part) {
+            $value = $map[$part]($object);
+            if ($value === null) {
+                return null;
+            }
+
+            $template[0][] = $part;
+            $template[1][] = $value;
+            $template[2][$countMap[$part]] = $value;
+        }
+
+        return [
+            implode(' ', $template[0]),
+            implode(' ', $template[1]),
+            $template[2]
+        ];
+    }
+
+    /**
+     * @param NameObject $object
      * @return iterable
      */
     private function prepare(NameObject $object): iterable
     {
-        foreach (['full', 'nameMiddle'] as $method) {
-            $pack = $this->{$method}($object);
+        $templates = [
+            [TPL::SURNAME, TPL::NAME, TPL::MIDDLE_NAME],
+            [TPL::NAME, TPL::MIDDLE_NAME, TPL::SURNAME],
+            [TPL::NAME, TPL::MIDDLE_NAME],
+            [TPL::NAME, TPL::SURNAME],
+            [TPL::SURNAME, TPL::NAME],
+        ];
+
+        foreach ($templates as $template) {
+            $pack = $this->factory($object, ...$template);
             if ($pack === null) {
                 continue;
             }
 
             yield $pack;
         }
-    }
-
-    /**
-     * @param NameObject $object
-     * @return array|null [$testString, $expected]
-     */
-    private function full(NameObject $object): ?array
-    {
-        $full = array_filter($object->getFull());
-        if (count($full) === 3) {
-            return [
-                sprintf('%s %s %s', TPL::SURNAME, TPL::NAME, TPL::MIDDLE_NAME),
-                implode(' ', $full),
-                [...$full, null]
-            ];
-        }
-
-        return null;
-    }
-
-    /**
-     * @param NameObject $object
-     * @return array|null [$testString, $expected]
-     */
-    private function nameMiddle(NameObject $object): ?array
-    {
-        if (!in_array(null, [$object->name, $object->middle])) {
-            return [
-                sprintf('%s %s',TPL::NAME, TPL::MIDDLE_NAME),
-                "$object->name $object->middle",
-                [null, $object->name, $object->middle, null]
-            ];
-        }
-
-        return null;
     }
 
     /**

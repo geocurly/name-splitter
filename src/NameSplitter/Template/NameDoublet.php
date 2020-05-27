@@ -43,12 +43,12 @@ class NameDoublet implements TemplateInterface
                     TPL::NAME => $parts[0],
                     TPL::MIDDLE_NAME => $parts[1],
                 ];
-            } else {
-                return [
-                    TPL::NAME => $parts[0],
-                    TPL::SURNAME => $parts[1],
-                ];
             }
+
+            return [
+                TPL::NAME => $parts[0],
+                TPL::SURNAME => $parts[1],
+            ];
         }
 
         if (
@@ -59,6 +59,15 @@ class NameDoublet implements TemplateInterface
                 TPL::MIDDLE_NAME => $parts[1],
                 TPL::NAME => $parts[0],
             ];
+        }
+
+        foreach ($parts as $key => $part) {
+            if (in_array(mb_substr($part, -2, 2, 'UTF-8'), ['ов', 'ва', 'ев', 'ко'], true)) {
+                return [
+                    TPL::SURNAME => $key === 0 ? $parts[0] : $parts[1],
+                    TPL::NAME => $key === 1 ? $parts[0] : $parts[1],
+                ];
+            }
         }
 
         return [
