@@ -43,15 +43,14 @@ class NameSplitter implements SplitterInterface
     private function getDefaultTemplates(): array
     {
         return [
+            new MiddleNameTriplet(), // Dictionary middle-name check
             new RussianRegexMatch([TPL::SURNAME, TPL::INITIALS_STRICT]), // Иванов И.И.
             new RussianRegexMatch([TPL::INITIALS_STRICT, TPL::SURNAME]), // И.И. Иванов
-            new MiddleNameTriplet(), // Dictionary middle-name check
-            new NameDoublet(), // Иванов Иван or Иван Иванов
             new RussianRegexMatch([TPL::INITIALS_SPLIT, TPL::SURNAME]), // И. И. Иванов
+            new NameDoublet(),
             new RussianRegexMatch([TPL::SURNAME, TPL::INITIALS_SPLIT]), // Иванов И. И.
             new RussianRegexMatch([TPL::SURNAME, TPL::NAME, TPL::MIDDLE_NAME]), // Иванов Иван Иванович
             new RussianRegexMatch([TPL::NAME, TPL::MIDDLE_NAME, TPL::SURNAME]), // Иван Иванович Иванов
-            new RussianRegexMatch([TPL::NAME, TPL::MIDDLE_NAME]), // Иван Иванович
         ];
     }
 

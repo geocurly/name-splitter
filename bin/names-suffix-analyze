@@ -1,0 +1,28 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Cli\CliAnalyzer;
+
+require_once __DIR__ . "/../vendor/autoload.php";
+
+$options = getopt('' , ['file:','count::']);
+if (!isset($options['file'])) {
+    exit("ERROR: Unknown csv path. Please put csv path to \"--file\" option." . PHP_EOL);
+}
+
+$csvPath = realpath($options['file']);
+if ($csvPath === false) {
+    exit("ERROR: Unknown csv path: $csvPath" . PHP_EOL);
+}
+
+$charCount = (int) $options['count'] ?? 3;
+
+$analyze = new CliAnalyzer($csvPath);
+foreach ($analyze->frequentSuffixes($charCount) as $suffix => $count) {
+    [$surnames, $names, $middles] = [$count['surname'] ?? 0, $count['name'] ?? 0, $count['middle'] ?? 0];
+    echo "$suffix - SURNAMES: $surnames, NAMES: $names, MIDDLES: $middles" . PHP_EOL;
+}
+
+echo PHP_EOL;

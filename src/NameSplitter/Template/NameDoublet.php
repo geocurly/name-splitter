@@ -12,6 +12,31 @@ use NameSplitter\Settings;
 class NameDoublet implements TemplateInterface
 {
     /**
+     * The most frequent suffixes for russian surname
+     */
+    private const SURNAME_FREQUENT_SUFFIXES = [
+        'ев',
+        'ов',
+        'ва',
+        'ко',
+        'ая',
+        'ян',
+        'нин',
+        'лин',
+        'рин',
+        'кин',
+        'кий',
+        'шин',
+        'хин',
+        'гин',
+        'чук',
+        'ких',
+        'кина',
+        'штейн',
+        'ллина',
+    ];
+
+    /**
      * @param StateInterface $state
      * @return array
      */
@@ -61,29 +86,7 @@ class NameDoublet implements TemplateInterface
             ];
         }
 
-        $surnameSuffix = [
-            'ов',
-            'ев',
-            'ева',
-            'ова',
-            'онко',
-            'енко',
-            'ллин',
-            'ллина',
-            'штейн',
-            'инина',
-            'инин',
-            'цкий',
-            'цкая',
-            'ский',
-            'ская',
-            'швили',
-            'сян',
-            'нян',
-            'опян',
-            'икин',
-        ];
-
+        $surnameSuffix = self::SURNAME_FREQUENT_SUFFIXES;
         $regex = "/^([а-яА-ЯёЁ]+(\s*-\s*)?)+(" . implode('|', $surnameSuffix) . ")$/iu";
         foreach ($parts as $key => $part) {
             if (preg_match($regex, $part) === 1) {

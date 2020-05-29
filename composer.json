@@ -20,7 +20,8 @@
     },
     "autoload": {
         "psr-4": {
-            "NameSplitter\\": "src/NameSplitter/"
+            "NameSplitter\\": "src/NameSplitter/",
+            "Cli\\": "src/Cli/"
         }
     },
     "autoload-dev": {
