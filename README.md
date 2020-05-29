@@ -24,7 +24,7 @@ $result = $splitter->split('Иванов Иван Иванович');
 
 ## Quality
 
-The NameSplitter's tests cover ~ 13000 cases of russian names with accuracy 99.65.
+The NameSplitter's tests cover ~ 13000 cases of russian names with accuracy 99.65. Every case took a part with many templates, so result cases count was 124283. 
 You can run tests with your data set (use `--verbose` option to see templates errors):
 ```bash
 [aleksandr@aleksandr name-splitter]$ ./bin/name-split-test --file=$(realpath fio.csv)
