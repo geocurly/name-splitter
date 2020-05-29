@@ -30,7 +30,11 @@ foreach ($tester->test() as $state => $message) {
 $accuracy = number_format($tester->getAccuracy(), 2);
 [$correct, $total] = $tester->getCounts();
 $delta = $total - $correct;
+$templates = implode(PHP_EOL, $tester->getTemplates());
 $result = <<<TEXT
+    
+    TESTED TEMPLATES:
+    $templates
     
     ACCURACY: $accuracy
     COUNT CASE TOTAL: $total

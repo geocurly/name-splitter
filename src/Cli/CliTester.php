@@ -19,6 +19,8 @@ class CliTester
     private array $stat = [0, 0];
     /** @var float $accuracy */
     private float $accuracy = 0.0;
+    /** @var array $templates */
+    private array $templates = [];
 
     /**
      * NameTester constructor.
@@ -34,9 +36,22 @@ class CliTester
      */
     public function test(): iterable
     {
+        $templates = [
+            [TPL::SURNAME, TPL::NAME, TPL::MIDDLE_NAME],
+            [TPL::NAME, TPL::MIDDLE_NAME, TPL::SURNAME],
+            [TPL::NAME, TPL::MIDDLE_NAME],
+            [TPL::NAME, TPL::SURNAME],
+            [TPL::SURNAME, TPL::NAME],
+            [TPL::SURNAME, TPL::INITIALS_STRICT],
+            [TPL::INITIALS_STRICT, TPL::SURNAME],
+            [TPL::SURNAME, TPL::INITIALS_SPLIT],
+            [TPL::INITIALS_SPLIT, TPL::SURNAME],
+        ];
+
+        $this->templates = array_map(fn(array $template) => implode(' ', $template), $templates);
         $splitter = new NameSplitter();
         foreach ($this->iterator->next() as $nameObject) {
-            foreach ($this->prepare($nameObject) as [$template, $testString, $expected]) {
+            foreach ($this->prepare($templates, $nameObject) as [$template, $testString, $expected]) {
                 $result = $splitter->split($testString);
                 $real = [
                     '%S' => $result->getSurname(),
@@ -84,9 +99,19 @@ class CliTester
     private function factory(NameTriplet $object, ...$parts): ?array
     {
         $map = [
-            TPL::SURNAME => fn($object) => $object->surname,
-            TPL::NAME => fn($object) => $object->name,
-            TPL::MIDDLE_NAME => fn($object) => $object->middle,
+            TPL::SURNAME => fn(NameTriplet $object) => $object->surname,
+            TPL::NAME => fn(NameTriplet $object) => $object->name,
+            TPL::MIDDLE_NAME => fn(NameTriplet $object) => $object->middle,
+            TPL::INITIALS_STRICT => function (NameTriplet $object) {
+                return in_array(null, [$object->middle, $object->name], true) ?
+                    null :
+                    mb_substr($object->name, 0, 1) . "." . mb_substr($object->middle, 0, 1) . ".";
+            },
+            TPL::INITIALS_SPLIT => function (NameTriplet $object) {
+                return in_array(null, [$object->middle, $object->name], true) ?
+                    null :
+                    mb_substr($object->name, 0, 1) . ". " . mb_substr($object->middle, 0, 1) . ".";
+            },
         ];
 
         $countMap = [
@@ -117,19 +142,12 @@ class CliTester
     }
 
     /**
+     * @param array $templates
      * @param NameTriplet $object
      * @return iterable
      */
-    private function prepare(NameTriplet $object): iterable
+    private function prepare(array $templates, NameTriplet $object): iterable
     {
-        $templates = [
-            [TPL::SURNAME, TPL::NAME, TPL::MIDDLE_NAME],
-            [TPL::NAME, TPL::MIDDLE_NAME, TPL::SURNAME],
-            [TPL::NAME, TPL::MIDDLE_NAME],
-            [TPL::NAME, TPL::SURNAME],
-            [TPL::SURNAME, TPL::NAME],
-        ];
-
         foreach ($templates as $template) {
             $pack = $this->factory($object, ...$template);
             if ($pack === null) {
@@ -154,5 +172,13 @@ class CliTester
     public function getCounts(): array
     {
         return $this->stat;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTemplates(): array
+    {
+        return $this->templates;
     }
 }
