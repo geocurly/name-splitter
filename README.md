@@ -2,7 +2,9 @@
 
 ### Unfortunately, utility supports only сyrillic names
 
-There is a name split utility. It's take input string and parse it to the object:
+There is a name split utility. It's take input string and parse it to the object. 
+
+## Usage:
 
 ```php
 <?php
@@ -20,9 +22,37 @@ $result = $splitter->split('Иванов Иван Иванович');
 ];
 ``` 
 
+## Quality
+
+The NameSplitter's tests cover ~ 13000 cases of russian names with accuracy 99.65.
+You can run tests with your data set (use `--verbose` option to see templates errors):
+```bash
+[aleksandr@aleksandr name-splitter]$ ./bin/name-split-test --file=$(realpath fio.csv)
+
+TESTED TEMPLATES:
+%Surname %Name %Middle
+%Name %Middle %Surname
+%Name %Middle
+%Name %Surname
+%Surname %Name
+%Surname %StrictInitials
+%StrictInitials %Surname
+%Surname %SplitInitials
+%SplitInitials %Surname
+
+ACCURACY: 99.65
+COUNT CASE TOTAL: 124283
+COUNT CASE PASS:  123848
+COUNT CASE ERROR: 435
+```
+Format for `fio.csv` file is:
+```csv
+SomeSurname;SomeName;SomeMiddleName
+``` 
+
 ## Problems
-* Ulility can't recognize templates like `%Name %Surname` when surname matches with middle name (for example `Иван Иванович`).
-* Some templates may not correctly work when split name doesn't exists in [dictionaries](https://github.com/geocurly/name-splitter/tree/master/resources/dictionaries/ru)
+* Utility can't recognize templates like `%Name %Surname` when surname matches with middle name (for example `Иван Иванович`).
+* Some templates may not correctly work when split name doesn't exist in [dictionaries](https://github.com/geocurly/name-splitter/tree/master/resources/dictionaries/ru)
 
 ## Decision
 You can use pre and post templates:
